@@ -30,6 +30,10 @@ import javafx.scene.layout.HBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Shape;
+import javafx.animation.FadeTransition;
+import javafx.scene.text.Font;
+
+
 
 
 
@@ -38,9 +42,9 @@ public class Snake{
     //variables
     VBox vbox =new VBox();
     GridPane grid = new GridPane();
-    int columns = 40;
+    int columns = 26;
     int rows = 30;
-    //boolean going = true;
+    boolean going = false;
     
     boolean Right=true;
     boolean Left=false;
@@ -54,7 +58,13 @@ public class Snake{
     Rectangle rect1;
     Rectangle rect2; 
     Rectangle fruit = new Rectangle();
-    
+    Label pt;
+    Label con;
+    Label title;
+    Button lvl;
+    Button lvl2;
+    Button lvl3;
+    //FadeTransition ft = new FadeTransition();
     public void draw(){
 	r.setWidth(10);
 	r.setHeight(10);
@@ -68,13 +78,34 @@ public class Snake{
 	grid.setConstraints(fruit, 15, 6);
     }//draw
 
+    public void instru(){
+	con = new Label("USE ARROW KEYS TO CONTROL SNAKE MOVEMENTS");
+	con.setFont(new Font("Arial", 22));
+    }//instru
+
     public HBox scoreBoard(){
 	HBox scoreB = new HBox();
 	Label score = new Label("Score : ");
-	Label pt = new Label(Integer.toString(points));
+	pt = new Label(Integer.toString(points));
 	scoreB.getChildren().addAll(score,pt);
 	return scoreB;
     }//scoreBoard
+
+    public HBox levelBoard(){
+	title = new Label("        SNAKE");
+	title.setFont(new Font("Arial", 23));
+	HBox levelB = new HBox();
+	lvl = new Button("Level 1");
+	lvl2= new Button("Level 2");
+	lvl3= new Button("Level 3");
+	levelB.getChildren().addAll(lvl,lvl2,lvl3,title);
+	return levelB;
+    }//scoreBoard
+
+    public void yourScore(){
+	pt.setText(Integer.toString(dot.getRec().size()+1));
+    }//yourScore
+    
 
     public boolean overlaps(Shape head, Shape food){
 	if(head.getBoundsInParent().intersects(food.getBoundsInParent())){
@@ -83,16 +114,25 @@ public class Snake{
 	return false;
     }
 
+    public boolean collide(){
+	for(int z = 0; z < dot.getRec().size();z++){
+	    if( overlaps(r, dot.getRectangle(z))==true){
+		return true;
+	    }
+	}//for
+	return false;
+    }//collide
+
     public void appear(){
 	int randNum = (int)((Math.random()*29));
-	int randNum2 = (int)((Math.random()*39));
+	int randNum2 = (int)((Math.random()*25));
 	grid.setConstraints(fruit, randNum2, randNum);
     }//appear
     
     @Override
     public void startGame(Stage stage) {
 	//Group root = new Group();
-
+       
 	//make grid lines
         for(int i = 0; i < columns; i++) {
             ColumnConstraints column = new ColumnConstraints(20);
@@ -103,10 +143,13 @@ public class Snake{
             RowConstraints row = new RowConstraints(20);
             grid.getRowConstraints().add(row);
 	}
-
+	
+	grid.setMinWidth(20);
+	//grid.setMaxWidth(30);
 	//style grid
         grid.setStyle("-fx-background-color: white; -fx-grid-lines-visible: true");
 	draw();
+	instru();
 	
 	//Controls
         Button controls=new Button();
@@ -137,6 +180,8 @@ public class Snake{
                 Up=false;
             }
         });
+
+	
 	/**	
     //Animation
         AnimationTimer animate=new AnimationTimer(){
@@ -188,8 +233,13 @@ public class Snake{
 		    Platform.runLater(() -> {
 			    /* interact with scene graph */
 			    if(overlaps(r,fruit)){
+				grid.getChildren().add(rect2 = dot.moreDots());
 				appear();
-			    }
+				yourScore();
+			    }//if
+			    if(collide()){
+				System.out.println("IT HIT");
+			    }//if
 			});
 		    if(Right){
 			//get positon before updating
@@ -260,14 +310,16 @@ public class Snake{
 	
 	
 	grid.getChildren().addAll(r,controls);
-	vbox.getChildren().addAll(grid,scoreBoard());	
+	vbox.getChildren().addAll(levelBoard(),grid,scoreBoard(),con);	
         //Scene scene = new Scene(root, 900, 720,Color.BLACK);
-	Scene scene = new Scene(vbox,(columns * 40) + 100, (rows * 40) + 100, Color.WHITE);
+	Scene scene = new Scene(vbox,600, 700, Color.WHITE);
+	//Scene scene = new Scene(vbox,(columns * 40) + 50, (rows * 40) + 50, Color.WHITE);
 	stage.setTitle("cs1302-arcade!");
 	stage.setScene(scene);
 	stage.sizeToScene();
 	stage.show();
+
+	
     } // startGame
     
 } // Snake
-
