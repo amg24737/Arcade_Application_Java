@@ -1,8 +1,7 @@
-package cs1302.arcade;
+package cs1302.arcade; //package statement
 
 //import statements
 import java.util.*;
-//import java.util.EventObject;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.layout.HBox;
@@ -36,6 +35,12 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.RowConstraints;
+import javafx.animation.Timeline;
+import javafx.util.Duration;
+import javafx.animation.KeyFrame;
+import java.text.SimpleDateFormat;
+import javafx.animation.Animation;
+import java.util.Calendar;
 
 /**
  * This class provides a sudoku game, providing
@@ -43,7 +48,7 @@ import javafx.scene.layout.RowConstraints;
  * difficulty, and an evaluate button for the player
  * to determine whether they have filled in the board
  * correctly according to the rules of the game.
- *@author Anna Marie Gann
+ * @author Anna Marie Gann
  * @author Alexander Coleman
  */
 public class Sudoku {
@@ -52,8 +57,6 @@ public class Sudoku {
     protected Button evaluate = new Button("Evaluate");
     protected GridPane gameBoard = new GridPane();
     protected TextField[][] textArr = new TextField[9][9];
-    
-    protected Button playAgain = new Button("Play again");
 
     protected TextField winStatus = new TextField(" ");
     protected Label winLabel = new Label("Win or Lose?");
@@ -72,12 +75,35 @@ public class Sudoku {
     protected TextField addArr;
 
     protected Button easy1 = new Button("Easy Board One");
-    protected Button easy2 = new Button("easy Board Two");
+    protected Button easy2 = new Button("Easy Board Two");
     protected Button med1 = new Button("Medium Board Two");
     protected Button med2 = new Button("Medium Board Two");
     protected Button hard1 = new Button("Hard Board One");
-    protected Button hard2 = new Button("hard Board Two");
+    protected Button hard2 = new Button("Hard Board Two");
     protected VBox levelBox = new VBox();
+    protected String nullString = " ";
+    protected String directionsString =
+	"Welcome to Sudoku! \n" +
+	"To being, select a board option from the right \n" +
+	"There are three difficulty levels to choose from \n" +
+	"Easy, medium, and hard \n" +
+	"To win, each row and column must have all of the \n" +
+	"numbers 1-9 with no repeats, as should each 3x3 grid \n" +
+	"to check if your solution if correct, click evaluate \n" +
+	"A win message will be displayed if your board is valid \n" +
+	"Happy gaming! \n" +
+	"\n" +
+	"\n";
+    
+    protected Label dirLabel = new Label(directionsString);
+    protected HBox labelBox = new HBox();
+    protected Label gameClock = new Label("");
+    protected int min;
+    protected int hour;
+    protected int sec;
+    protected HBox clockBox = new HBox();
+    protected Timeline time;
+    protected Button h2Sol = new Button("Hard Two Solution");
     
     protected char[][] hardOne = {
 	{'0', '0', '7', '0', '0', '0', '4', '0', '0'},
@@ -175,41 +201,101 @@ public class Sudoku {
 	{"80", "81", "82", "83", "84", "85", "86", "87", "88"},
     };
 
+    protected char[][] hardTwoSolution = {
+	{'3', '4', '6', '2', '1', '7', '9', '5', '8'},
+        {'7', '5', '8', '6', '3', '9', '1', '2', '4'},
+        {'9', '1', '2', '4', '5', '8', '7', '6', '3'},
+        {'5', '9', '1', '3', '7', '4', '2', '8', '6'},
+        {'6', '2', '4', '8', '9', '1', '5', '3', '7'},
+        {'8', '7', '3', '5', '6', '2', '4', '9', '1'},
+        {'1', '3', '9', '7', '8', '5', '6', '4', '2'},
+        {'4', '6', '5', '1', '2', '3', '8', '7', '9'},
+        {'2', '8', '2', '9', '4', '6', '3', '1', '5'},
+    };
+    
+    /**
+     * This method loads the easy one
+     * char array into the game board if
+     * the player picks the easy one action
+     * @param none
+     */
     public void easyOneAct() {
 	easy1.setOnAction(event-> {
 		gameBoardInit(easyOne);
 	    });//lambda
     }//easyOneAct
 
+     /**
+     * This method loads the easy two
+     * char array into the game board if
+     * the player picks the easy two action
+     * @param none
+     */
     public void easyTwoAct() {
 	easy2.setOnAction(event-> {
 		gameBoardInit(easyTwo);
 	    });//lambda
     }//easyTwoAct
 
+     /**
+     * This method loads the medium one
+     * char array into the game board if
+     * the player picks the medium one action
+     * @param none
+     */
     public void medOneAct() {
 	med1.setOnAction(event-> {
 		gameBoardInit(medOne);
 	    });//lambda
     }//medOneAct
 
+     /**
+     * This method loads the medium two
+     * char array into the game board if
+     * the player picks the medium two action
+     * @param none
+     */
     public void medTwoAct() {
 	med2.setOnAction(event-> {
 		gameBoardInit(medTwo);
 	    });//lambda
     }//medTwoAct
 
+     /**
+     * This method loads the hard one
+     * char array into the game board if
+     * the player picks the easy one action
+     * @param none
+     */
      public void hardOneAct() {
 	hard1.setOnAction(event-> {
 		gameBoardInit(hardOne);
 	    });//lambda
     }//hardOneAct
 
+     /**
+     * This method loads the hard two
+     * char array into the game board if
+     * the player picks the hard two action
+     * @param none
+     */
      public void hardTwoAct() {
 	hard2.setOnAction(event-> {
 		gameBoardInit(hardTwo);
 	    });//lambda
     }//hardTwoAct
+
+    /**                                                                        
+     * This method loads the solution                                          
+     * to the second hard board when                                       
+     * the player picks this option                                    
+     * @param none                                                             
+     */
+     public void hardTwoSolution() {
+        h2Sol.setOnAction(event-> {
+                gameBoardInit(hardTwoSolution);
+            });//lambda                                                        
+    }//hardTwoAct 
     
     /**
      * This method initializes the game board
@@ -225,19 +311,27 @@ public class Sudoku {
 	
 	for (int i = 0; i < numCols; i++) {
 		ColumnConstraints colConst = new ColumnConstraints();
-		colConst.setPercentWidth(45.0/numCols);
+		colConst.setPercentWidth(63.0/numCols);
 		gameBoard.getColumnConstraints().add(colConst);
 	    }//row constraint
 
 	for (int i = 0; i < numRows; i++) {
 		RowConstraints rowConst = new RowConstraints();
-		rowConst.setPercentHeight(45.0/numRows);
+		rowConst.setPercentHeight(63.0/numRows);
 		gameBoard.getRowConstraints().add(rowConst);
 	    }//row constraint
 	gameBoardInit(defaultBoard);
 	root.setCenter(gameBoard);
+	//center
     }//boardSetUp
 
+    /**
+     * This method takes in an array, either the
+     * defalt of the one selected by the player, and
+     * sets an id for each element, and sets the ability to
+     * or not to edit based on the board selection. 
+     * @parameter a multiminensional int array
+     */
     public void gameBoardInit(char[][] arr) {
 	for (int rows = 0; rows < 9; rows++) {
 	    for (int cols = 0; cols < 9; cols++) {
@@ -248,11 +342,17 @@ public class Sudoku {
 		textArr[rows][cols] = new TextField();
 	       	textArr[rows][cols].setEditable(true);
 		if(!(b.equals(zeroString))) {
-		    addArr.setEditable(false);
-		}//if		
-		addArr = textArr[rows][cols];
-       		addArr.setId(j);
-		addArr.setText(b);
+		    addArr = textArr[rows][cols];
+		    addArr.setStyle("-fx-text-inner-color: red;");
+		    addArr.setEditable(false);		    
+		    addArr.setId(j);
+		    addArr.setText(b);
+		}//if
+		else {
+		    addArr = textArr[rows][cols];
+		    addArr.setId(j);
+		    addArr.setText(nullString);
+		}//else
 		gameBoard.getChildren().add(addArr);
 		gameBoard.setConstraints(addArr, cols, rows);
 	    }//for
@@ -267,12 +367,28 @@ public class Sudoku {
 	 * @param none
 	 */
     public void setUpGame() {
-	winBox.getChildren().addAll(winLabel, winStatus);
+	winBox.setPrefWidth(350);
+	winBox.setPrefHeight(100);
+	winBox.getChildren().addAll(winLabel, winStatus, gameClock);
 	root.setBottom(winBox);
-	levelBox.getChildren().addAll(easy1, easy2, med1, med2, hard1, hard2);
-	root.setRight(levelBox);     
-	evaluateBox.getChildren().addAll(evaluate, playAgain);
-	root.setTop(evaluateBox);
+	//bottom
+	levelBox.setPrefWidth(150);
+	easy1.setMinWidth(levelBox.getPrefWidth());
+	easy2.setMinWidth(levelBox.getPrefWidth());
+	med1.setMinWidth(levelBox.getPrefWidth());
+	med2.setMinWidth(levelBox.getPrefWidth());
+	hard1.setMinWidth(levelBox.getPrefWidth());
+	hard2.setMinWidth(levelBox.getPrefWidth());
+	levelBox.getChildren().addAll(easy1, easy2, med1, med2, hard1, hard2, h2Sol);
+	root.setRight(levelBox);
+	//right
+	dirLabel.setWrapText(true);
+	labelBox.getChildren().add(dirLabel);
+	root.setTop(labelBox);
+	//top
+	evaluateBox.getChildren().add(evaluate);
+	root.setLeft(evaluateBox);
+	//left
     }//setUpGame
 
     /**
@@ -311,9 +427,10 @@ public class Sudoku {
 	evaluate.setOnAction(event-> {
 		String winString = "YOU WIN!";
 		String loseString = "Sorry, this configuration is incorrect";
-		if((validBox() == true) && (validRow() == true) && (validColumn() == true)) {
+		if(validRow() == true){
 		    gameWin = true;
 		    winStatus.setText(winString);
+		    time.stop();
 		}//if
 	      
 		else {
@@ -328,13 +445,14 @@ public class Sudoku {
 	     * each number one through nine, and is a valid
 	     * box according to the game rules. 
 	     * @param none
+	     * @returns boolean
 	     */
     public boolean validBox() {
 	for (int i = 0; i < 9; i+=3) {
 	    for (int j = 0; j < 9; j+=3) {
 		for (int pos = 0; pos < 8; pos++) {
 		    for (int posTwo = pos+1; posTwo <9; posTwo++) {
-			if (values[i + pos%3][j + pos/3] == values[i + posTwo%3][j + posTwo/3]) {
+			if(values[i+ pos%3][j+pos/3]==values[i+posTwo%3][j+posTwo/3]){
 			    return false;
 			}//if
 		    }//posTwo
@@ -350,6 +468,7 @@ public class Sudoku {
 	     * each row of the game board is valid
 	     * according to the rules of the game
 	     * @param none
+	     * @returns boolean
 	     */
     public boolean validRow(){
 	for (int r = 0; r < 9; r++) {
@@ -370,12 +489,13 @@ public class Sudoku {
 	     * make sure that each column of the player's
 	     * board is valid accodring to game rules.
 	     * @param none
+	     * @returns boolean
 	     */
     public boolean validColumn() {
 	for (int c = 0; c < 9; c++) {
 	    for (int r = 0; r < 8; r++) {
 		for (int r2 = r+1; r2 < 9; r2++) {
-		    if(values[r][c] == values[2][c])
+		    if(values[r][c] == values[r2][c])
 			{
 			    return false;
 			}//if
@@ -384,7 +504,29 @@ public class Sudoku {
 	}//for c
 	return true;
     }//validColumn
-
+    
+    /**
+     * This method provides a clock which
+     * tracks how long the player takes
+     * to successfullt complete the puzzle
+     * @param none
+     */
+    public void tl() {
+	time = new Timeline(new KeyFrame(Duration.ZERO, e-> {
+		    SimpleDateFormat sfd = new SimpleDateFormat("hh:mm:ss");
+		    Calendar cal = Calendar.getInstance();
+		    cal.set(Calendar.MINUTE, 00);
+		    cal.set(Calendar.SECOND, 0);
+		    String dateString = cal.getTime().toString();
+		    gameClock.setText(dateString);
+	}), //duration
+	    new KeyFrame(Duration.seconds(1))
+	    ); //event handler
+	time.setCycleCount(Animation.INDEFINITE);
+	//repeat until called to stop
+	time.playFromStart();
+	//play from the start of the same
+    }//tl
 	    /**
 	     * This method provides the actual
 	     * game loop and is the only method
@@ -393,21 +535,23 @@ public class Sudoku {
 	     * @param a stage for the game
 	     */
     public void play(Stage sudokuStage) {
-	Scene scene = new Scene(root, 600, 500);
-	boardSetUp();
-	setUpGame();
-	groupHandler();
-	easyOneAct();
-	easyTwoAct();
-	medOneAct();
-	medTwoAct();
-	hardOneAct();
-	hardTwoAct();
-	evaluate();
-	sudokuStage.setTitle("Sudoku");
+	Scene scene = new Scene(root, 600, 600);
+	tl();//game clock
+	boardSetUp(); //sets board constraints
+	setUpGame(); //loads user selection to board
+	groupHandler(); //gets user input from each element
+	easyOneAct(); //if easy one board is selected
+	easyTwoAct(); //if easy two board is selected
+	medOneAct(); //if med one board is selected
+	medTwoAct(); //if med two is selected
+	hardOneAct(); //if hard one is selected
+	hardTwoAct(); //if hard two is selected
+	hardTwoSolution(); //solution to second hard board
+	evaluate(); //to evaluate the board
+	sudokuStage.setTitle("Sudoku"); //title
 	sudokuStage.setScene(scene);
-	sudokuStage.sizeToScene();
-	sudokuStage.show();
+	sudokuStage.sizeToScene(); //format
+	sudokuStage.show();//output
     }//startGame
 
 }//sudoku
