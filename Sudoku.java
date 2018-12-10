@@ -69,7 +69,8 @@ public class Sudoku {
     protected int x = 0;
     protected int y = 0;
     protected String zeroString = "0";
-
+    protected TextField addArr;
+    
     protected char[][] hardOne = {
 	{'0', '0', '7', '0', '0', '0', '4', '0', '0'},
 	{'9', '8', '0', '0', '0', '0', '0', '0', '3'},
@@ -180,12 +181,19 @@ public class Sudoku {
 
 	for (int rows = 0; rows < 9; rows++) {
 	    for (int cols = 0; cols < 9; cols++) {
+		//		String rowString = Integer.toString(rows);
+		//	String colString = Integer.toString(cols);
+		//	String j = rowString + colString;
+		//	String b = Character.toString((easyOne[rows][cols]));
 		textArr[rows][cols] = new TextField("0");
-		textArr[rows][cols].setEditable(true);
-		gameBoard.getChildren().add(textArr[rows][cols]);
+		//	textArr[rows][cols].setEditable(true);
+		addArr = textArr[rows][cols];
+		//	addArr.setId(j);
+		//	addArr.setText(b);
+		gameBoard.getChildren().add(addArr);
 	    }//for cols
 	}//for rows
-	
+	/**
 	for (int row = 0; row < 9; row++) {
 	    for (int col = 0; col < 9; col++) {
 		String rowString = Integer.toString(row);
@@ -198,7 +206,8 @@ public class Sudoku {
 			textArr[row][col].setEditable(false);
 		    }//if
 	    }//for col
-	}//for row	
+	}//for row
+	*/	
 	root.setCenter(gameBoard);
     }//boardSetUp
     
