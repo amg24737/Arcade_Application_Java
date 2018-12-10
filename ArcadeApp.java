@@ -1,9 +1,9 @@
 package cs1302.arcade;
+
 //import statements
 import javafx.scene.Group;
 import javafx.scene.input.KeyCode;
 import javafx.scene.shape.Rectangle;
-
 import java.util.*;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -16,7 +16,6 @@ import javafx.scene.paint.LinearGradient;
 import javafx.scene.paint.Paint;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.Image;
-import javafx.scene.control.Toggle;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -24,8 +23,6 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleButton;
-import javafx.scene.control.ToggleGroup;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.stage.Modality;
@@ -33,29 +30,31 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.TextArea;
+import javafx.animation.FadeTransition;
+import javafx.util.Duration;
+import javafx.scene.text.Font;
+import javafx.scene.input.MouseEvent;
+import javafx.geometry.Pos;
 
 public class ArcadeApp extends Application {
 
-    protected BorderPane root = new BorderPane();
     Random rng = new Random();
-    protected HBox gameChoice = new HBox();
+    FadeTransition extra1;
+    FadeTransition extra2;
+    FadeTransition extra3;
+    protected VBox gameChoice = new VBox();
     protected Button sudokuButton = new Button("Sudoku: Play now!");
     protected Button snakeButton = new Button("Snake: Play now!");
-    protected TextArea welcome = new TextArea();
+    protected Label gameTitle= new Label("ARCADE CORNER");
+    protected Label teamName= new Label("TEAM NAME");
+    protected Label authorNames= new Label("Anna Marie Gann & Alexander Coleman");
 
-    protected VBox text1 = new VBox();
-    protected TextField tf1 = new TextField("Welcome to out arcade!");
-    protected TextField tf2 = new TextField("We have two games for you to play: ");
-    protected TextField tf3 = new TextField("Snake and Sudoku.");
-    protected TextField tf4 = new TextField("Click one of the game buttons to begin.");
-    protected TextField tf5 = new TextField("Happy gaming!");
-    
+
     public void snake () {
 	snakeButton.setOnAction(evant-> {
 		Snake sn = new Snake();
 		Stage snakeStage = new Stage();
-		//		sn.startGame(snakeStage);
+		sn.startGame(snakeStage);
 	    });//lambda
     }//snake
     
@@ -68,28 +67,56 @@ public class ArcadeApp extends Application {
     }//sudoku
 
     public void setUp() {
-	text1.getChildren().addAll(tf1, tf2, tf3, tf4, tf5);
-	root.setTop(text1);
-	
-	gameChoice.getChildren().addAll(snakeButton, sudokuButton);
-
-	root.setCenter(gameChoice);
+	extra1 = new FadeTransition(Duration.millis(2000), gameTitle);
+	extra1.setFromValue(1.0);
+	extra1.setToValue(0.3);
+	extra1.setCycleCount(4);
+	extra1.setAutoReverse(true);
+	gameTitle.setFont(new Font("Arial", 33));
+	gameTitle.setTextFill(Color.RED);
+	gameTitle.setVisible(false);
+	extra2 = new FadeTransition(Duration.millis(3000), teamName);
+	extra2.setFromValue(1.0);
+	extra2.setToValue(0.3);
+	extra2.setCycleCount(10);
+	extra2.setAutoReverse(true);
+	teamName.setFont(new Font("Arial", 33));
+	teamName.setTextFill(Color.BLACK);
+	teamName.setVisible(false);
+	extra3 = new FadeTransition(Duration.millis(4000), authorNames);
+	extra3.setFromValue(1.0);
+	extra3.setToValue(0.3);
+	extra3.setCycleCount(7);
+	extra3.setAutoReverse(true);
+	authorNames.setFont(new Font("Arial", 25));
+	authorNames.setTextFill(Color.RED);
+	authorNames.setVisible(false);
+   
+	gameChoice.getChildren().addAll(gameTitle,teamName,authorNames,snakeButton,sudokuButton);
+	gameChoice.setAlignment(Pos.CENTER);
+	gameChoice.setStyle("-fx-background-color: #f0c21e ;");
     }//set up
     
     @Override
     public void start(Stage stage) {
-	
-        Scene scene = new Scene(root, 640, 480);
         stage.setTitle("cs1302-arcade!");
 	setUp();
+	gameChoice.setOnMouseClicked(event-> {
+		gameTitle.setVisible(true);
+		extra1.play();
+		teamName.setVisible(true);
+		extra2.play();
+		authorNames.setVisible(true);
+		extra3.play();
+	    });//lambda
+
 	sudoku();
 	snake();
-        stage.setScene(scene);
+	Scene scene = new Scene(gameChoice, 640, 480,Color.BLUE);
+	stage.setScene(scene);
 	stage.sizeToScene();
         stage.show();
 
-	// the group must request input focus to receive key events
-	// @see https://docs.oracle.com/javase/8/javafx/api/javafx/scene/Node.html#requestFocus--
     } // start
 
     public static void main(String[] args) {
@@ -105,4 +132,3 @@ public class ArcadeApp extends Application {
     } // main
 
 } // ArcadeApp
-
