@@ -70,6 +70,14 @@ public class Sudoku {
     protected int y = 0;
     protected String zeroString = "0";
     protected TextField addArr;
+
+    protected Button easy1 = new Button("Easy Board One");
+    protected Button easy2 = new Button("easy Board Two");
+    protected Button med1 = new Button("Medium Board Two");
+    protected Button med2 = new Button("Medium Board Two");
+    protected Button hard1 = new Button("Hard Board One");
+    protected Button hard2 = new Button("hard Board Two");
+    protected VBox levelBox = new VBox();
     
     protected char[][] hardOne = {
 	{'0', '0', '7', '0', '0', '0', '4', '0', '0'},
@@ -142,6 +150,18 @@ public class Sudoku {
 	{'0', '0', '9', '0', '0', '0', '0', '0', '6'},
 	{'0', '0', '5', '0', '0', '0', '3', '0', '9'},
     };
+
+    protected char[][] defaultBoard = {
+	{'0', '0', '0', '0', '0', '0', '0', '0', '0'},
+	{'0', '0', '0', '0', '0', '0', '0', '0', '0'},
+	{'0', '0', '0', '0', '0', '0', '0', '0', '0'},
+	{'0', '0', '0', '0', '0', '0', '0', '0', '0'},
+	{'0', '0', '0', '0', '0', '0', '0', '0', '0'},
+	{'0', '0', '0', '0', '0', '0', '0', '0', '0'},
+	{'0', '0', '0', '0', '0', '0', '0', '0', '0'},
+	{'0', '0', '0', '0', '0', '0', '0', '0', '0'},
+	{'0', '0', '0', '0', '0', '0', '0', '0', '0'},
+    };
     
     protected String[][] gameBoardId = {
 	{"00", "01", "02", "03", "04", "05", "06", "07", "08"},
@@ -154,6 +174,42 @@ public class Sudoku {
 	{"70", "71", "72", "73", "74", "75", "76", "77", "78"},
 	{"80", "81", "82", "83", "84", "85", "86", "87", "88"},
     };
+
+    public void easyOneAct() {
+	easy1.setOnAction(event-> {
+		gameBoardInit(easyOne);
+	    });//lambda
+    }//easyOneAct
+
+    public void easyTwoAct() {
+	easy2.setOnAction(event-> {
+		gameBoardInit(easyTwo);
+	    });//lambda
+    }//easyTwoAct
+
+    public void medOneAct() {
+	med1.setOnAction(event-> {
+		gameBoardInit(medOne);
+	    });//lambda
+    }//medOneAct
+
+    public void medTwoAct() {
+	med2.setOnAction(event-> {
+		gameBoardInit(medTwo);
+	    });//lambda
+    }//medTwoAct
+
+     public void hardOneAct() {
+	hard1.setOnAction(event-> {
+		gameBoardInit(hardOne);
+	    });//lambda
+    }//hardOneAct
+
+     public void hardTwoAct() {
+	hard2.setOnAction(event-> {
+		gameBoardInit(hardTwo);
+	    });//lambda
+    }//hardTwoAct
     
     /**
      * This method initializes the game board
@@ -166,7 +222,7 @@ public class Sudoku {
 	int numRows = 9;
 	int numCols = 9;
 	gameBoard.setGridLinesVisible(true);
-
+	
 	for (int i = 0; i < numCols; i++) {
 		ColumnConstraints colConst = new ColumnConstraints();
 		colConst.setPercentWidth(45.0/numCols);
@@ -178,38 +234,30 @@ public class Sudoku {
 		rowConst.setPercentHeight(45.0/numRows);
 		gameBoard.getRowConstraints().add(rowConst);
 	    }//row constraint
-
-	for (int rows = 0; rows < 9; rows++) {
-	    for (int cols = 0; cols < 9; cols++) {
-		//		String rowString = Integer.toString(rows);
-		//	String colString = Integer.toString(cols);
-		//	String j = rowString + colString;
-		//	String b = Character.toString((easyOne[rows][cols]));
-		textArr[rows][cols] = new TextField("0");
-		//	textArr[rows][cols].setEditable(true);
-		addArr = textArr[rows][cols];
-		//	addArr.setId(j);
-		//	addArr.setText(b);
-		gameBoard.getChildren().add(addArr);
-	    }//for cols
-	}//for rows
-	/**
-	for (int row = 0; row < 9; row++) {
-	    for (int col = 0; col < 9; col++) {
-		String rowString = Integer.toString(row);
-		String colString = Integer.toString(col);
-		String j = rowString + colString;
-	    	String b = Character.toString((easyOne[row][col]));
-		textArr[row][col].setId(j);
-		textArr[row][col].setText(b);
-		if (!(b.equals(zeroString))) {
-			textArr[row][col].setEditable(false);
-		    }//if
-	    }//for col
-	}//for row
-	*/	
+	gameBoardInit(defaultBoard);
 	root.setCenter(gameBoard);
     }//boardSetUp
+
+    public void gameBoardInit(char[][] arr) {
+	for (int rows = 0; rows < 9; rows++) {
+	    for (int cols = 0; cols < 9; cols++) {
+		String rowString = Integer.toString(rows);
+	       	String colString = Integer.toString(cols);
+	       	String j = rowString + colString;
+		String b = Character.toString(arr[rows][cols]);
+		textArr[rows][cols] = new TextField();
+	       	textArr[rows][cols].setEditable(true);
+		if(!(b.equals(zeroString))) {
+		    addArr.setEditable(false);
+		}//if		
+		addArr = textArr[rows][cols];
+       		addArr.setId(j);
+		addArr.setText(b);
+		gameBoard.getChildren().add(addArr);
+		gameBoard.setConstraints(addArr, cols, rows);
+	    }//for
+	}//for
+    }//gameBoardInit
     
 	/**
 	 * This method sets up the visual of the game,
@@ -221,7 +269,8 @@ public class Sudoku {
     public void setUpGame() {
 	winBox.getChildren().addAll(winLabel, winStatus);
 	root.setBottom(winBox);
-		     
+	levelBox.getChildren().addAll(easy1, easy2, med1, med2, hard1, hard2);
+	root.setRight(levelBox);     
 	evaluateBox.getChildren().addAll(evaluate, playAgain);
 	root.setTop(evaluateBox);
     }//setUpGame
@@ -347,6 +396,14 @@ public class Sudoku {
 	Scene scene = new Scene(root, 600, 500);
 	boardSetUp();
 	setUpGame();
+	groupHandler();
+	easyOneAct();
+	easyTwoAct();
+	medOneAct();
+	medTwoAct();
+	hardOneAct();
+	hardTwoAct();
+	evaluate();
 	sudokuStage.setTitle("Sudoku");
 	sudokuStage.setScene(scene);
 	sudokuStage.sizeToScene();
@@ -354,4 +411,3 @@ public class Sudoku {
     }//startGame
 
 }//sudoku
-
