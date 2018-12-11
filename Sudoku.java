@@ -52,35 +52,44 @@ import java.util.Calendar;
  * @author Alexander Coleman
  */
 public class Sudoku {
-
+    //border pane to store enture sudoku app
     protected BorderPane root = new BorderPane();
+    //button to evaluate board
     protected Button evaluate = new Button("Evaluate");
+    //grid pane to hold entire sudoku boaed
     protected GridPane gameBoard = new GridPane();
+    //text field array
     protected TextField[][] textArr = new TextField[9][9];
-
+    //where the win is displayed
     protected TextField winStatus = new TextField(" ");
     protected Label winLabel = new Label("Win or Lose?");
     protected HBox winBox = new HBox();
-
+    //storage for win text field
     protected Boolean gameWin = false;
+    //array to store values
     protected int[][] values = new int[9][9];
     protected Group group = new Group();
     protected TextField tempText = new TextField();
-    
+    //storage
     protected VBox evaluateBox = new VBox();
     protected int x = 0;
     protected int y = 0;
+    //for comparision
     protected String zeroString = "0";
+    //to use in out inital arrays
     protected TextField addArr;
-
+    //buttons for each game board option
     protected Button easy1 = new Button("Easy Board One");
     protected Button easy2 = new Button("Easy Board Two");
     protected Button med1 = new Button("Medium Board Two");
     protected Button med2 = new Button("Medium Board Two");
     protected Button hard1 = new Button("Hard Board One");
     protected Button hard2 = new Button("Hard Board Two");
+    //storage for game board options
     protected VBox levelBox = new VBox();
+    //for comparison
     protected String nullString = " ";
+    //string for direction label
     protected String directionsString =
 	"Welcome to Sudoku! \n" +
 	"To being, select a board option from the right \n" +
@@ -96,9 +105,14 @@ public class Sudoku {
     
     protected Label dirLabel = new Label(directionsString);
     protected HBox labelBox = new HBox();
+    //storage for direction label
     protected Label gameClock = new Label("");
+    //game clock which runs as player plays
     protected HBox clockBox = new HBox();
+    //storage for clock
+    //timeline
     protected Timeline time;
+    //solution buttons
     protected Button h2Sol = new Button("Hard Two Solution");
     protected Button h1Sol = new Button("Hard One Solution");
     protected Button m2Sol = new Button("Med Two Solution");
@@ -116,7 +130,7 @@ public class Sudoku {
 	{'0', '7', '0', '0', '0', '0', '8', '0', '0'},
 	{'0', '4', '3', '0', '0', '5', '0', '0', '0'},
 	{'0', '0', '2', '0', '4', '0', '7', '0', '0'},
-    };
+    };//hard option one
     
     protected char[][] hardTwo =  {
 	{'0', '0', '0', '0', '0', '0', '9', '0', '0'},
@@ -128,7 +142,7 @@ public class Sudoku {
 	{'0', '0', '0', '0', '8', '0', '6', '4', '0'},
 	{'0', '6', '0', '1', '2', '0', '0', '0', '0'},
 	{'0', '0', '7', '9', '0', '6', '0', '0', '5'},
-    };
+    };//hard option two
     
     protected char[][] medOne =  {
 	{'7', '0', '4', '0', '0', '0', '0', '0', '0'},
@@ -140,7 +154,7 @@ public class Sudoku {
 	{'0', '0', '0', '5', '0', '2', '3', '0', '0'},
 	{'1', '0', '0', '0', '0', '0', '9', '0', '4'},
 	{'0', '4', '0', '0', '0', '7', '0', '0', '0'},
-    };
+    };//medium option one
     
     protected char[][] medTwo =  {
 	{'0', '0', '2', '0', '0', '3', '0', '1', '0'},
@@ -152,7 +166,7 @@ public class Sudoku {
 	{'0', '0', '8', '3', '0', '0', '0', '0', '1'},
 	{'0', '3', '0', '0', '0', '0', '0', '0', '0'},
 	{'0', '7', '0', '0', '0', '9', '0', '0', '0'},
-    };
+    };//medium option two
     
     protected char[][] easyOne =  {
 	{'0', '0', '0', '0', '0', '0', '9', '0', '2'},
@@ -164,7 +178,7 @@ public class Sudoku {
 	{'0', '3', '0', '6', '0', '8', '0', '0', '0'},
 	{'0', '9', '4', '0', '0', '5', '0', '6', '8'},
 	{'1', '0', '8', '0', '0', '0', '0', '0', '0'},
-    };
+    };//easy board option one
     
     protected char[][] easyTwo = {
 	{'3', '0', '0', '0', '0', '2', '6', '8', '0'},
@@ -176,7 +190,7 @@ public class Sudoku {
 	{'0', '0', '0', '0', '6', '0', '1', '0', '0'},
 	{'0', '0', '9', '0', '0', '0', '0', '0', '6'},
 	{'0', '0', '5', '0', '0', '0', '3', '0', '9'},
-    };
+    };//easy board option two
 
     protected char[][] defaultBoard = {
 	{'0', '0', '0', '0', '0', '0', '0', '0', '0'},
@@ -188,7 +202,7 @@ public class Sudoku {
 	{'0', '0', '0', '0', '0', '0', '0', '0', '0'},
 	{'0', '0', '0', '0', '0', '0', '0', '0', '0'},
 	{'0', '0', '0', '0', '0', '0', '0', '0', '0'},
-    };
+    };//default board used before user selects one
     
     protected String[][] gameBoardId = {
 	{"00", "01", "02", "03", "04", "05", "06", "07", "08"},
@@ -200,7 +214,7 @@ public class Sudoku {
 	{"60", "61", "62", "63", "64", "65", "66", "67", "68"},
 	{"70", "71", "72", "73", "74", "75", "76", "77", "78"},
 	{"80", "81", "82", "83", "84", "85", "86", "87", "88"},
-    };
+    };//positions in grid of each TextField
 
     protected char[][] hardTwoSolution = {
 	{'3', '4', '6', '2', '1', '7', '9', '5', '8'},
@@ -212,7 +226,7 @@ public class Sudoku {
         {'1', '3', '9', '7', '8', '5', '6', '4', '2'},
         {'4', '6', '5', '1', '2', '3', '8', '7', '9'},
         {'2', '8', '7', '9', '4', '6', '3', '1', '5'},
-    };
+    };//hardTwoSolution
 
      protected char[][] hardOneSolution = {
 	{'1', '5', '7', '2', '3', '8', '4', '6', '8'},
@@ -224,7 +238,7 @@ public class Sudoku {
         {'5', '7', '1', '3', '9', '6', '8', '4', '2'},
         {'8', '4', '3', '7', '2', '5', '9', '1', '6'},
         {'6', '9', '2', '8', '4', '1', '7', '3', '5'},
-    };
+     };//hardOneSolution
 
       protected char[][] medTwoSolution = {
 	{'4', '8', '2', '7', '9', '3', '6', '1', '5'},
@@ -236,7 +250,7 @@ public class Sudoku {
         {'9', '5', '8', '3', '7', '2', '4', '6', '1'},
         {'2', '3', '4', '6', '1', '8', '7', '5', '9'},
         {'6', '7', '1', '4', '5', '9', '8', '3', '2'},
-    };
+      };//medTwoSolution
 
       protected char[][] medOneSolution = {
 	{'7', '1', '4', '8', '2', '5', '6', '3', '9'},
@@ -248,7 +262,7 @@ public class Sudoku {
         {'9', '8', '6', '5', '4', '2', '3', '1', '7'},
         {'1', '5', '7', '3', '8', '6', '9', '2', '4'},
         {'2', '4', '3', '1', '9', '7', '5', '6', '8'},
-    };
+      };//medOneSolution
 
       protected char[][] easyTwoSolution = {
 	{'3', '1', '7', '5', '9', '2', '6', '8', '2'},
@@ -260,7 +274,7 @@ public class Sudoku {
         {'4', '3', '2', '7', '6', '9', '1', '5', '8'},
         {'1', '7', '9', '8', '3', '5', '2', '4', '6'},
         {'6', '8', '5', '1', '2', '4', '3', '7', '9'},
-    };
+      };//easyTwoSolution
 
     protected char[][] easyOneSolution = {
 	{'3', '1', '7', '5', '4', '6', '9', '8', '2'},
@@ -272,7 +286,7 @@ public class Sudoku {
         {'2', '3', '5', '6', '9', '8', '7', '4', '1'},
         {'7', '9', '4', '2', '1', '5', '3', '6', '8'},
         {'1', '6', '8', '4', '7', '3', '5', '2', '9'},
-    };
+    };//easyOneSolution
     
     /**
      * This method loads the easy one
@@ -283,8 +297,6 @@ public class Sudoku {
     public void easyOneAct() {
 	easy1.setOnAction(event-> {
 		gameBoardInit(easyOne);
-		i = 0;
-		time.playFromStart();
 	    });//lambda
     }//easyOneAct
 
@@ -297,8 +309,6 @@ public class Sudoku {
     public void easyTwoAct() {
 	easy2.setOnAction(event-> {
 		gameBoardInit(easyTwo);
-		i = 0;
-		time.playFromStart();
 	    });//lambda
     }//easyTwoAct
 
@@ -311,8 +321,6 @@ public class Sudoku {
     public void medOneAct() {
 	med1.setOnAction(event-> {
 		gameBoardInit(medOne);
-		i = 0;
-		time.playFromStart();
 	    });//lambda
     }//medOneAct
 
@@ -325,8 +333,6 @@ public class Sudoku {
     public void medTwoAct() {
 	med2.setOnAction(event-> {
 		gameBoardInit(medTwo);
-		i = 0;
-		time.playFromStart();
 	    });//lambda
     }//medTwoAct
 
@@ -339,8 +345,6 @@ public class Sudoku {
      public void hardOneAct() {
 	hard1.setOnAction(event-> {
 		gameBoardInit(hardOne);
-		i = 0;
-		time.playFromStart();
 	    });//lambda
     }//hardOneAct
 
@@ -353,8 +357,6 @@ public class Sudoku {
      public void hardTwoAct() {
 	hard2.setOnAction(event-> {
 		gameBoardInit(hardTwo);
-		i = 0;
-		time.playFromStart();
 	    });//lambda
     }//hardTwoAct
 
@@ -438,23 +440,24 @@ public class Sudoku {
      * @param none
      */
     public void boardSetUp() {
-	int numRows = 9;
-	int numCols = 9;
+	int numRows = 9; //row num
+	int numCols = 9; //col num
+	//formatting
 	gameBoard.setGridLinesVisible(true);
-	
+	//set column constraints
 	for (int i = 0; i < numCols; i++) {
 		ColumnConstraints colConst = new ColumnConstraints();
 		colConst.setPercentWidth(63.0/numCols);
 		gameBoard.getColumnConstraints().add(colConst);
 	    }//row constraint
-
+	//set row constraints
 	for (int i = 0; i < numRows; i++) {
 		RowConstraints rowConst = new RowConstraints();
 		rowConst.setPercentHeight(63.0/numRows);
 		gameBoard.getRowConstraints().add(rowConst);
 	    }//row constraint
-	gameBoardInit(defaultBoard);
-	root.setCenter(gameBoard);
+	gameBoardInit(defaultBoard); //init to def
+	root.setCenter(gameBoard); //center
 	//center
     }//boardSetUp
 
@@ -470,22 +473,23 @@ public class Sudoku {
 	    for (int cols = 0; cols < 9; cols++) {
 		String rowString = Integer.toString(rows);
 	       	String colString = Integer.toString(cols);
-	       	String j = rowString + colString;
+	       	String j = rowString + colString; //position
 		String b = Character.toString(arr[rows][cols]);
 		textArr[rows][cols] = new TextField();
 	       	textArr[rows][cols].setEditable(true);
 		if(!(b.equals(zeroString))) {
 		    addArr = textArr[rows][cols];
 		    addArr.setStyle("-fx-text-inner-color: red;");
-		    addArr.setEditable(false);		    
-		    addArr.setId(j);
-		    addArr.setText(b);
+		    addArr.setEditable(false);//cant change		    
+		    addArr.setId(j); //set id
+		    addArr.setText(b); //set text
 		}//if
 		else {
 		    addArr = textArr[rows][cols];
-		    addArr.setId(j);
+		    addArr.setId(j); //give an id
 		    addArr.setText(nullString);
 		}//else
+		//put on board
 		gameBoard.getChildren().add(addArr);
 		gameBoard.setConstraints(addArr, cols, rows);
 	    }//for
@@ -500,11 +504,10 @@ public class Sudoku {
 	 * @param none
 	 */
     public void setUpGame() {
-	gameClock.setStyle("-fx-color: red");
-	winBox.setPrefWidth(350);
-	winBox.setPrefHeight(100);
+	winBox.setPrefWidth(350); //formatting
+	winBox.setPrefHeight(100); //formatting
 	winBox.getChildren().addAll(winLabel, winStatus, gameClock);
-	root.setBottom(winBox);
+	root.setBottom(winBox); //bottom
 	levelBox.setPrefWidth(150);
 	easy1.setMinWidth(levelBox.getPrefWidth());
 	easy2.setMinWidth(levelBox.getPrefWidth());
@@ -512,7 +515,7 @@ public class Sudoku {
 	med2.setMinWidth(levelBox.getPrefWidth());
 	hard1.setMinWidth(levelBox.getPrefWidth());
 	hard2.setMinWidth(levelBox.getPrefWidth());
-	easy1.setStyle("-fx-base: purple;");
+	easy1.setStyle("-fx-base: purple;"); //color
 	easy2.setStyle("-fx-base: purple;");
 	med1.setStyle("-fx-base: purple;");
 	med2.setStyle("-fx-base: purple;");
@@ -524,7 +527,7 @@ public class Sudoku {
 	m2Sol.setMinWidth(levelBox.getPrefWidth());
 	h1Sol.setMinWidth(levelBox.getPrefWidth());
 	h2Sol.setMinWidth(levelBox.getPrefWidth());
-	e1Sol.setStyle("-fx-base: blue;");
+	e1Sol.setStyle("-fx-base: blue;"); //set color
 	e2Sol.setStyle("-fx-base: blue;");
 	m1Sol.setStyle("-fx-base: blue;");
 	m2Sol.setStyle("-fx-base: blue;");
@@ -532,12 +535,12 @@ public class Sudoku {
 	h2Sol.setStyle("-fx-base: blue;");
 	levelBox.getChildren().addAll(easy1, easy2, med1, med2, hard1, hard2);
 	levelBox.getChildren().addAll(e1Sol, e2Sol, m1Sol, m2Sol, h1Sol, h2Sol);
-	root.setRight(levelBox);
+	root.setRight(levelBox); //right
 	dirLabel.setWrapText(true);
 	labelBox.getChildren().add(dirLabel);
-	root.setTop(labelBox);
+	root.setTop(labelBox); //top
 	evaluateBox.getChildren().add(evaluate);
-	root.setLeft(evaluateBox);
+	root.setLeft(evaluateBox); ///left
     }//setUpGame
 
     /**
@@ -550,6 +553,10 @@ public class Sudoku {
      * @param none
      */
     public void getValues() {
+	//i is rows
+	//j is cols
+	//get text at each indice of the game board
+	//store text in an int array
 	for (int i = 0; i < 9; i++) {
 	    for (int j = 0; j < 9; j++) {
 		String tempV = textArr[i][j].getText();
@@ -569,12 +576,13 @@ public class Sudoku {
 	evaluate.setOnAction(event-> {
 		String winString = "YOU WIN!";
 		String loseString = "Sorry, this configuration is incorrect";
+		//if the players board is valid
 		if(validRow()==true&&validColumn()==true&&validBox()==true){
 		    winStatus.setText(winString);
 		    time.stop();
-		    i =0;
 		}//if
-	      
+		
+		//if board was not valid
 		else {
 		    winStatus.setText(loseString);
 		}//else
@@ -591,7 +599,9 @@ public class Sudoku {
 	     */
     public boolean validBox() {
 	getValues();
-
+	//initalize arr of values
+	//a is rows
+	//b is cols
 	for (int a = 0; a < 9; a++) {
 	    for (int b = 0; b < 9; b++) {
 		if(values[a][b]>9 || values[a][b]<1) {
@@ -599,7 +609,9 @@ public class Sudoku {
 		}//if
 	    }//for b
 	}//for a
-	
+	//parse the array in three col
+	//and three row intervals
+	//to consider each grid separately
 	for (int i = 0; i < 9; i+=3) {
 	    for (int j = 0; j < 9; j+=3) {
 		for (int pos = 0; pos < 9; pos++) {
@@ -611,7 +623,7 @@ public class Sudoku {
 		}//for pos
 	    }//for j
 	}//for i
-	return true;
+	return true; //if never false
     }//validBox
 
 
@@ -624,7 +636,9 @@ public class Sudoku {
 	     */
     public boolean validRow(){
 	getValues();
-
+	//initialize array of values
+	//a is rows
+	//b is cols
 	for (int a = 0; a < 9; a++) {
 	    for (int b = 0; b < 9; b++) {
 		if(values[a][b]>9 || values[a][b]<1) {
@@ -632,7 +646,10 @@ public class Sudoku {
 		}//if
 	    }//for b
 	}//for a
-	
+
+	//r is rows
+	//c is cols
+	//c2 is a col position to comp to
 	for (int r = 0; r < 9; r++) {
 	    for (int c = 0; c < 9; c++) {
 		for (int c2 = c+1; c2 < 9; c2++) { 
@@ -643,7 +660,7 @@ public class Sudoku {
 		}//for c2
 	    }//for c
 	}//for r
-	return true;
+	return true; //if never f
     }//validRow
 
 	    /**
@@ -654,8 +671,8 @@ public class Sudoku {
 	     * @returns boolean
 	     */
     public boolean validColumn() {
-	getValues();
-
+	getValues(); //inital arr of values
+	//a is row indices b is col indices
 	for (int a = 0; a < 9; a++) {
 	    for (int b = 0; b < 9; b++) {
 		if(values[a][b]>9 || values[a][b]<1) {
@@ -663,20 +680,29 @@ public class Sudoku {
 		}//if
 	    }//for b
 	}//for a
-	
+
+	//c represents col incices
+	//r represents row indices
 	for (int c = 0; c < 9; c++) {
 	    for (int r = 0; r < 9; r++) {
 		for (int r2 = r+1; r2 < 9; r2++) {
 		    if(values[r][c] == values[r2][c])
 			{
-			    return false;
+			    return false; //if same
 			}//if
 		}//for r2
 	    }//for r
 	}//for c
-	return true;
+	return true; //true if never f
     }//validColumn
 
+    /**
+     * This method converts an int 
+     * representation of time to a
+     * string representation of time
+     *@param an int rep of time
+     *@returns a string represetation of time
+     */
     public String toTime(int a){
 	int hours =  a/ 60/ 60;
 	int min = (a - (hoursToSeconds(hours)))
@@ -687,15 +713,33 @@ public class Sudoku {
 	return Integer.toString(hours)+":"+Integer.toString(min)+":"+Integer.toString(secs);
     }//toTime
 
+    /**
+     * This method converts a number
+     * of hours to a number of seconds
+     *@param an int representing hours
+     *@returns an int num of seconds
+     */
     private int hoursToSeconds(int hours) {
         return hours * 60* 60;
     }//hoursToSeconds
 
+    /**
+     * This method converts minutes
+     * to seconds.
+     *@param an int repping a num of minutes
+     *@returns an int num of seconds
+     */
     private int minutesToSeconds(int minutes) {
         return minutes * 60;
     }//minutesToSeconds
 
     int i = 0;
+
+    /**
+     * This method increments I
+     * to be used in the timeline
+     *@param none
+     */
     public void inI(){
 	i++;
     }//inI
@@ -749,4 +793,3 @@ public class Sudoku {
     }//startGame
 
 }//sudoku
-
