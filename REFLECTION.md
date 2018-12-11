@@ -23,3 +23,8 @@ Here is a sample entry (delete this line; also: feel free to copy/paste/modify):
 2. **TODO:** Snake; set up winning screen and restart method for user replayability.
 
 3. **PROB:** 
+
+## WED 2018-12-11 @ 4:00 PM EST
+
+1. **DONE:** Project is Done. Please check application for extra credit, and check title screen for aninmation. 
+    Click screen to begin animation on title srceen.
