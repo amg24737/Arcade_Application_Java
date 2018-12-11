@@ -68,7 +68,6 @@ public class Sudoku {
     protected TextField tempText = new TextField();
     
     protected VBox evaluateBox = new VBox();
-
     protected int x = 0;
     protected int y = 0;
     protected String zeroString = "0";
@@ -284,8 +283,6 @@ public class Sudoku {
     public void easyOneAct() {
 	easy1.setOnAction(event-> {
 		gameBoardInit(easyOne);
-		i = 0;
-		time.playFromStart();
 	    });//lambda
     }//easyOneAct
 
@@ -298,8 +295,6 @@ public class Sudoku {
     public void easyTwoAct() {
 	easy2.setOnAction(event-> {
 		gameBoardInit(easyTwo);
-		i = 0;
-		time.playFromStart();
 	    });//lambda
     }//easyTwoAct
 
@@ -312,8 +307,6 @@ public class Sudoku {
     public void medOneAct() {
 	med1.setOnAction(event-> {
 		gameBoardInit(medOne);
-		i = 0;
-		time.playFromStart();
 	    });//lambda
     }//medOneAct
 
@@ -326,8 +319,6 @@ public class Sudoku {
     public void medTwoAct() {
 	med2.setOnAction(event-> {
 		gameBoardInit(medTwo);
-		i = 0;
-		time.playFromStart();
 	    });//lambda
     }//medTwoAct
 
@@ -340,8 +331,6 @@ public class Sudoku {
      public void hardOneAct() {
 	hard1.setOnAction(event-> {
 		gameBoardInit(hardOne);
-		i = 0;
-		time.playFromStart();
 	    });//lambda
     }//hardOneAct
 
@@ -354,8 +343,6 @@ public class Sudoku {
      public void hardTwoAct() {
 	hard2.setOnAction(event-> {
 		gameBoardInit(hardTwo);
-		i = 0;
-		time.playFromStart();
 	    });//lambda
     }//hardTwoAct
 
@@ -501,12 +488,10 @@ public class Sudoku {
 	 * @param none
 	 */
     public void setUpGame() {
-	root.setStyle("-fx-text-background-color: pink;");
 	winBox.setPrefWidth(350);
 	winBox.setPrefHeight(100);
 	winBox.getChildren().addAll(winLabel, winStatus, gameClock);
 	root.setBottom(winBox);
-	//bottom
 	levelBox.setPrefWidth(150);
 	easy1.setMinWidth(levelBox.getPrefWidth());
 	easy2.setMinWidth(levelBox.getPrefWidth());
@@ -535,48 +520,27 @@ public class Sudoku {
 	levelBox.getChildren().addAll(easy1, easy2, med1, med2, hard1, hard2);
 	levelBox.getChildren().addAll(e1Sol, e2Sol, m1Sol, m2Sol, h1Sol, h2Sol);
 	root.setRight(levelBox);
-	//right
 	dirLabel.setWrapText(true);
 	labelBox.getChildren().add(dirLabel);
 	root.setTop(labelBox);
-	//top
 	evaluateBox.getChildren().add(evaluate);
 	root.setLeft(evaluateBox);
-	//left
     }//setUpGame
 
     /**
-     * This method sets up action events
-     * to change the game board as the 
-     * player adds new values to the board.
+     * This method obtains the value of each
+     * text box, both the predetermined ones
+     * and the user input ones, and puts the
+     * values into an array which is then
+     * evaluated to determine if it does
+     * or does not represent a valid solution
      * @param none
      */
-    /**
-    public void groupHandler() {
-	gameBoard.setOnMousePressed(event-> {
-		TextField ttf = ((TextField)event.getSource());
-		String nodeId = ttf.getId();
-
-		for (int i = 0; i < 9; i++) {
-		    for (int j = 0; j < 9; j++) {
-			if (gameBoardId[i][j].equals(nodeId)) {
-				String nodeString = ttf.getText();
-				char importantC = nodeString.charAt(0);
-				int charInt = Character.getNumericValue(importantC);
-				values[i][j] = charInt;
-			    }//if
-			    }//for j
-		    }//for i
-		}); //eventHandler
-    }//groupHandler
-
-*/
-
     public void getValues() {
 	for (int i = 0; i < 9; i++) {
 	    for (int j = 0; j < 9; j++) {
-		String tempVal = textArr[i][j].getText();
-		values[i][j] = Character.getNumericValue(tempVal.charAt(0));
+		String tempV = textArr[i][j].getText();
+		values[i][j] = Character.getNumericValue(tempV.charAt(0));
 	    }//forj
 	}//fori
     }//getvalues
@@ -592,10 +556,9 @@ public class Sudoku {
 	evaluate.setOnAction(event-> {
 		String winString = "YOU WIN!";
 		String loseString = "Sorry, this configuration is incorrect";
-		if(validRow() == true && validColumn() == true && validBox() == true){
+		if(validRow()==true&&validColumn()==true&&validBox()==true){
 		    winStatus.setText(winString);
 		    time.stop();
-			i= 0;
 		}//if
 	      
 		else {
@@ -605,7 +568,7 @@ public class Sudoku {
     }//evaluate
 
 	    /**
-	     * This method checks whether easy
+	     * This method checks whether each
 	     * three by three sub box only has one of
 	     * each number one through nine, and is a valid
 	     * box according to the game rules. 
@@ -614,11 +577,20 @@ public class Sudoku {
 	     */
     public boolean validBox() {
 	getValues();
+
+	for (int a = 0; a < 9; a++) {
+	    for (int b = 0; b < 9; b++) {
+		if(values[a][b]>9 || values[a][b]<1) {
+		    return false;
+		}//if
+	    }//for b
+	}//for a
+	
 	for (int i = 0; i < 9; i+=3) {
 	    for (int j = 0; j < 9; j+=3) {
 		for (int pos = 0; pos < 9; pos++) {
 		    for (int posTwo = pos+1; posTwo <9; posTwo++) {
-			if(values[i+ pos%3][j+pos/3]==values[i+posTwo%3][j+posTwo/3]){
+			if(values[i+pos%3][j+pos/3]==values[i+posTwo%3][j+posTwo/3]){
 			    return false;
 			}//if
 		    }//posTwo
@@ -638,13 +610,20 @@ public class Sudoku {
 	     */
     public boolean validRow(){
 	getValues();
+
+	for (int a = 0; a < 9; a++) {
+	    for (int b = 0; b < 9; b++) {
+		if(values[a][b]>9 || values[a][b]<1) {
+		    return false;
+		}//if
+	    }//for b
+	}//for a
+	
 	for (int r = 0; r < 9; r++) {
 	    for (int c = 0; c < 9; c++) {
-		for (int c2 = c+1; c2 < 9; c2++) {
-		    //		    System.out.println("V"+ values[r][c]+ " r:"+r + " c:"+c +" C2:" + c2 + " val2: " + values[r][c2]);
+		for (int c2 = c+1; c2 < 9; c2++) { 
 		    if(values[r][c] == values[r][c2])
 			{
-			    System.out.println("V"+ values[r][c]+ " r:"+r + " c:"+c +" C2:" + c2 + " val2: " + values[r][c2]);
 			    return false;  
 			}//if
 		}//for c2
@@ -662,6 +641,15 @@ public class Sudoku {
 	     */
     public boolean validColumn() {
 	getValues();
+
+	for (int a = 0; a < 9; a++) {
+	    for (int b = 0; b < 9; b++) {
+		if(values[a][b]>9 || values[a][b]<1) {
+		    return false;
+		}//if
+	    }//for b
+	}//for a
+	
 	for (int c = 0; c < 9; c++) {
 	    for (int r = 0; r < 9; r++) {
 		for (int r2 = r+1; r2 < 9; r2++) {
@@ -674,7 +662,7 @@ public class Sudoku {
 	}//for c
 	return true;
     }//validColumn
-    
+
     public String toTime(int a){
 	int hours =  a/ 60/ 60;
 	int min = (a - (hoursToSeconds(hours)))
@@ -687,15 +675,17 @@ public class Sudoku {
 
     private int hoursToSeconds(int hours) {
         return hours * 60* 60;
-    }
+    }//hoursToSeconds
 
     private int minutesToSeconds(int minutes) {
         return minutes * 60;
-    }
-    	int i = 0;
+    }//minutesToSeconds
+
+    int i = 0;
     public void inI(){
 	i++;
-    }
+    }//inI
+    
     /**
      * This method provides a clock which
      * tracks how long the player takes
@@ -712,6 +702,7 @@ public class Sudoku {
 	time.setCycleCount(Animation.INDEFINITE);
 	//repeat until called to stop
     }//tl
+
 	    /**
 	     * This method provides the actual
 	     * game loop and is the only method
