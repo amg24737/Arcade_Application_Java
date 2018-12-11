@@ -55,6 +55,19 @@ public class ArcadeApp extends Application {
     //storage for game choice which
     //will be set to the scene
     protected VBox gameChoice = new VBox();
+    //string for the player's name
+    protected String nameS = " ";
+    protected String dir = "Enter initials here, then choose a game";
+    protected TextField name = new TextField(dir);
+    //place for user to enter their name
+    //ints for high scores
+    protected int snakeH = 0;
+    protected int sudokuH = 0;
+    String snHS = "SNAKE HIGH SCORE: "+ nameS+ " " +snakeH;
+    String skHS = "SUDOKU HIGH SCORE: "+ nameS+ " " +sudokuH;
+    protected Label sudHighS = new Label(skHS);
+    //snake high score label
+    protected Label snaHighS = new Label(snHS);
     //sudoku button
     protected Button sudokuButton = new Button("Sudoku: Play now!");
     //snake button
@@ -74,6 +87,8 @@ public class ArcadeApp extends Application {
      */
     public void snake () {
 	snakeButton.setOnAction(evant-> {
+		//get player's name from text field
+		nameS = name.getText();
 		//create game object
 		Snake sn = new Snake();
 		//stage for game
@@ -93,6 +108,8 @@ public class ArcadeApp extends Application {
      */
     public void sudoku() {
 	sudokuButton.setOnAction(event-> {
+		//get player's name from text box
+		nameS = name.getText();
 		//create a game object
 		Sudoku sud = new Sudoku();
 		//stage for game
@@ -134,9 +151,9 @@ public class ArcadeApp extends Application {
 	authorNames.setFont(new Font("Arial", 25));
 	authorNames.setTextFill(Color.RED); //color
 	authorNames.setVisible(false); //vis
-   
 	gameChoice.getChildren().addAll(gameTitle,teamName,
-					authorNames,snakeButton,sudokuButton);
+					authorNames,snakeButton,sudokuButton,
+					name, snaHighS, sudHighS);
 	gameChoice.setAlignment(Pos.CENTER);
 	gameChoice.setStyle("-fx-background-color: #f0c21e ;");
     }//set up
@@ -177,5 +194,4 @@ public class ArcadeApp extends Application {
 	    System.exit(1);
 	} // try
     } // main
-
 } // ArcadeApp
