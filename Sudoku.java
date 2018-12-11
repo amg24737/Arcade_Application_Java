@@ -98,12 +98,14 @@ public class Sudoku {
     protected Label dirLabel = new Label(directionsString);
     protected HBox labelBox = new HBox();
     protected Label gameClock = new Label("");
-    protected int min;
-    protected int hour;
-    protected int sec;
     protected HBox clockBox = new HBox();
     protected Timeline time;
     protected Button h2Sol = new Button("Hard Two Solution");
+    protected Button h1Sol = new Button("Hard One Solution");
+    protected Button m2Sol = new Button("Med Two Solution");
+    protected Button m1Sol = new Button("Med One Solution");
+    protected Button e2Sol = new Button("Easy Two Solution");
+    protected Button e1Sol = new Button("Easy One Solution");
     
     protected char[][] hardOne = {
 	{'0', '0', '7', '0', '0', '0', '4', '0', '0'},
@@ -210,7 +212,67 @@ public class Sudoku {
         {'8', '7', '3', '5', '6', '2', '4', '9', '1'},
         {'1', '3', '9', '7', '8', '5', '6', '4', '2'},
         {'4', '6', '5', '1', '2', '3', '8', '7', '9'},
-        {'2', '8', '2', '9', '4', '6', '3', '1', '5'},
+        {'2', '8', '7', '9', '4', '6', '3', '1', '5'},
+    };
+
+     protected char[][] hardOneSolution = {
+	{'1', '5', '7', '2', '3', '8', '4', '6', '8'},
+        {'9', '8', '6', '4', '5', '7', '1', '2', '3'},
+        {'2', '3', '4', '6', '1', '9', '5', '7', '8'},
+        {'3', '1', '9', '5', '7', '2', '6', '8', '4'},
+        {'4', '5', '6', '1', '8', '3', '2', '9', '7'},
+        {'7', '2', '8', '9', '6', '4', '3', '5', '1'},
+        {'5', '7', '1', '3', '9', '6', '8', '4', '2'},
+        {'8', '4', '3', '7', '2', '5', '9', '1', '6'},
+        {'6', '9', '2', '8', '4', '1', '7', '3', '5'},
+    };
+
+      protected char[][] medTwoSolution = {
+	{'4', '8', '2', '7', '9', '3', '6', '1', '5'},
+        {'7', '1', '3', '8', '6', '5', '9', '2', '4'},
+        {'5', '9', '6', '1', '2', '4', '3', '8', '7'},
+        {'8', '2', '5', '9', '3', '7', '1', '4', '6'},
+        {'1', '4', '9', '2', '8', '6', '5', '7', '3'},
+        {'3', '6', '7', '5', '4', '1', '2', '9', '8'},
+        {'9', '5', '8', '3', '7', '2', '4', '6', '1'},
+        {'2', '3', '4', '6', '1', '8', '7', '5', '9'},
+        {'6', '7', '1', '4', '5', '9', '8', '3', '2'},
+    };
+
+      protected char[][] medOneSolution = {
+	{'7', '1', '4', '8', '2', '5', '6', '3', '9'},
+        {'3', '2', '8', '4', '6', '9', '7', '5', '1'},
+        {'6', '9', '5', '7', '1', '3', '4', '8', '2'},
+        {'4', '6', '2', '9', '3', '8', '1', '7', '5'},
+        {'5', '3', '1', '2', '7', '4', '8', '9', '6'},
+        {'8', '7', '9', '6', '5', '1', '2', '4', '3'},
+        {'9', '8', '6', '5', '4', '2', '3', '1', '7'},
+        {'1', '5', '7', '3', '8', '6', '9', '2', '4'},
+        {'2', '4', '3', '1', '9', '7', '5', '6', '8'},
+    };
+
+      protected char[][] easyTwoSolution = {
+	{'3', '1', '7', '5', '9', '2', '6', '8', '2'},
+        {'9', '5', '6', '3', '4', '8', '7', '1', '2'},
+        {'8', '2', '4', '6', '7', '1', '9', '3', '5'},
+        {'7', '9', '3', '4', '5', '6', '8', '2', '1'},
+        {'5', '6', '1', '2', '8', '7', '4', '9', '3'},
+        {'2', '4', '8', '9', '1', '3', '5', '6', '7'},
+        {'4', '3', '2', '7', '6', '9', '1', '5', '8'},
+        {'1', '7', '9', '8', '3', '5', '2', '4', '6'},
+        {'6', '8', '5', '1', '2', '4', '3', '7', '9'},
+    };
+
+    protected char[][] easyOneSolution = {
+	{'3', '1', '7', '5', '4', '6', '9', '8', '2'},
+        {'4', '5', '6', '9', '8', '2', '1', '7', '3'},
+        {'8', '2', '9', '7', '3', '1', '6', '5', '4'},
+        {'5', '8', '2', '1', '6', '9', '4', '3', '7'},
+        {'6', '4', '1', '3', '2', '7', '8', '9', '5'},
+        {'9', '7', '3', '8', '5', '4', '2', '1', '6'},
+        {'2', '3', '5', '6', '9', '8', '7', '4', '1'},
+        {'7', '9', '4', '2', '1', '5', '3', '6', '8'},
+        {'1', '6', '8', '4', '7', '3', '5', '2', '9'},
     };
     
     /**
@@ -296,6 +358,66 @@ public class Sudoku {
                 gameBoardInit(hardTwoSolution);
             });//lambda                                                        
     }//hardTwoAct 
+
+   /**                                                                        
+     * This method loads the solution                                          
+     * to the first hard board when                                       
+     * the player picks this option                                    
+     * @param none                                                             
+     */
+     public void hardOneSolution() {
+        h1Sol.setOnAction(event-> {
+                gameBoardInit(hardOneSolution);
+            });//lambda                                                        
+    }//hardOneAct 
+
+   /**                                                                        
+     * This method loads the solution                                          
+     * to the second med board when                                       
+     * the player picks this option                                    
+     * @param none                                                             
+     */
+     public void medTwoSolution() {
+        m2Sol.setOnAction(event-> {
+                gameBoardInit(medTwoSolution);
+            });//lambda                                                        
+    }//medTwoAct
+
+    /**                                                                      
+     * This method loads the solution                                          
+     * to the first med board when                                       
+     * the player picks this option                                    
+     * @param none                                                             
+     */
+     public void medOneSolution() {
+        m1Sol.setOnAction(event-> {
+                gameBoardInit(medOneSolution);
+            });//lambda                                                        
+    }//medOneAct
+
+     /**                                                                      
+     * This method loads the solution                                          
+     * to the second easy board when                                       
+     * the player picks this option                                    
+     * @param none                                                             
+     */
+     public void easyTwoSolution() {
+        e2Sol.setOnAction(event-> {
+                gameBoardInit(easyTwoSolution);
+            });//lambda                                                        
+    }//easyTwoAct
+
+     /**                                                                      
+     * This method loads the solution                                          
+     * to the first easy board when                                       
+     * the player picks this option                                    
+     * @param none                                                             
+     */
+     public void easyOneSolution() {
+        e1Sol.setOnAction(event-> {
+                gameBoardInit(easyOneSolution);
+            });//lambda                                                        
+    }//easyOneAct 
     
     /**
      * This method initializes the game board
@@ -367,6 +489,7 @@ public class Sudoku {
 	 * @param none
 	 */
     public void setUpGame() {
+	root.setStyle("-fx-text-background-color: pink;");
 	winBox.setPrefWidth(350);
 	winBox.setPrefHeight(100);
 	winBox.getChildren().addAll(winLabel, winStatus, gameClock);
@@ -379,7 +502,26 @@ public class Sudoku {
 	med2.setMinWidth(levelBox.getPrefWidth());
 	hard1.setMinWidth(levelBox.getPrefWidth());
 	hard2.setMinWidth(levelBox.getPrefWidth());
-	levelBox.getChildren().addAll(easy1, easy2, med1, med2, hard1, hard2, h2Sol);
+	easy1.setStyle("-fx-base: purple;");
+	easy2.setStyle("-fx-base: purple;");
+	med1.setStyle("-fx-base: purple;");
+	med2.setStyle("-fx-base: purple;");
+	hard1.setStyle("-fx-base: purple;");
+	hard2.setStyle("-fx-base: purple;");
+	e1Sol.setMinWidth(levelBox.getPrefWidth());
+	e2Sol.setMinWidth(levelBox.getPrefWidth());
+	m1Sol.setMinWidth(levelBox.getPrefWidth());
+	m2Sol.setMinWidth(levelBox.getPrefWidth());
+	h1Sol.setMinWidth(levelBox.getPrefWidth());
+	h2Sol.setMinWidth(levelBox.getPrefWidth());
+	e1Sol.setStyle("-fx-base: blue;");
+	e2Sol.setStyle("-fx-base: blue;");
+	m1Sol.setStyle("-fx-base: blue;");
+	m2Sol.setStyle("-fx-base: blue;");
+	h1Sol.setStyle("-fx-base: blue;");
+	h2Sol.setStyle("-fx-base: blue;");
+	levelBox.getChildren().addAll(easy1, easy2, med1, med2, hard1, hard2);
+	levelBox.getChildren().addAll(e1Sol, e2Sol, m1Sol, m2Sol, h1Sol, h2Sol);
 	root.setRight(levelBox);
 	//right
 	dirLabel.setWrapText(true);
@@ -397,6 +539,7 @@ public class Sudoku {
      * player adds new values to the board.
      * @param none
      */
+    /**
     public void groupHandler() {
 	gameBoard.setOnMousePressed(event-> {
 		TextField ttf = ((TextField)event.getSource());
@@ -415,7 +558,17 @@ public class Sudoku {
 		}); //eventHandler
     }//groupHandler
 
+*/
 
+    public void getValues() {
+	for (int i = 0; i < 9; i++) {
+	    for (int j = 0; j < 9; j++) {
+		String tempVal = textArr[i][j].getText();
+		values[i][j] = Character.getNumericValue(tempVal.charAt(0));
+	    }//forj
+	}//fori
+    }//getvalues
+    
 	    /**
 	     * This method is called when the 
 	     * player clicks the evaluate button. 
@@ -427,8 +580,7 @@ public class Sudoku {
 	evaluate.setOnAction(event-> {
 		String winString = "YOU WIN!";
 		String loseString = "Sorry, this configuration is incorrect";
-		if(validRow() == true){
-		    gameWin = true;
+		if(validRow() == true && validColumn() == true && validBox() == true){
 		    winStatus.setText(winString);
 		    time.stop();
 		}//if
@@ -448,9 +600,10 @@ public class Sudoku {
 	     * @returns boolean
 	     */
     public boolean validBox() {
+	getValues();
 	for (int i = 0; i < 9; i+=3) {
 	    for (int j = 0; j < 9; j+=3) {
-		for (int pos = 0; pos < 8; pos++) {
+		for (int pos = 0; pos < 9; pos++) {
 		    for (int posTwo = pos+1; posTwo <9; posTwo++) {
 			if(values[i+ pos%3][j+pos/3]==values[i+posTwo%3][j+posTwo/3]){
 			    return false;
@@ -471,12 +624,15 @@ public class Sudoku {
 	     * @returns boolean
 	     */
     public boolean validRow(){
+	getValues();
 	for (int r = 0; r < 9; r++) {
-	    for (int c = 0; c < 8; c++) {
-		for (int c2 = c+1; c2 <9; c2++) {
+	    for (int c = 0; c < 9; c++) {
+		for (int c2 = c+1; c2 < 9; c2++) {
+		    //		    System.out.println("V"+ values[r][c]+ " r:"+r + " c:"+c +" C2:" + c2 + " val2: " + values[r][c2]);
 		    if(values[r][c] == values[r][c2])
 			{
-			    return false;
+			    System.out.println("V"+ values[r][c]+ " r:"+r + " c:"+c +" C2:" + c2 + " val2: " + values[r][c2]);
+			    return false;  
 			}//if
 		}//for c2
 	    }//for c
@@ -492,8 +648,9 @@ public class Sudoku {
 	     * @returns boolean
 	     */
     public boolean validColumn() {
+	getValues();
 	for (int c = 0; c < 9; c++) {
-	    for (int r = 0; r < 8; r++) {
+	    for (int r = 0; r < 9; r++) {
 		for (int r2 = r+1; r2 < 9; r2++) {
 		    if(values[r][c] == values[r2][c])
 			{
@@ -539,7 +696,6 @@ public class Sudoku {
 	tl();//game clock
 	boardSetUp(); //sets board constraints
 	setUpGame(); //loads user selection to board
-	groupHandler(); //gets user input from each element
 	easyOneAct(); //if easy one board is selected
 	easyTwoAct(); //if easy two board is selected
 	medOneAct(); //if med one board is selected
@@ -547,6 +703,11 @@ public class Sudoku {
 	hardOneAct(); //if hard one is selected
 	hardTwoAct(); //if hard two is selected
 	hardTwoSolution(); //solution to second hard board
+	hardOneSolution(); //sol to first hard puzzle
+	medTwoSolution(); //sol to second med puzzle
+	medOneSolution(); //sol to first med board
+	easyTwoSolution(); //sol to second easy board
+	easyOneSolution(); //sol to first east puzzle
 	evaluate(); //to evaluate the board
 	sudokuStage.setTitle("Sudoku"); //title
 	sudokuStage.setScene(scene);
