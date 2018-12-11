@@ -283,6 +283,8 @@ public class Sudoku {
     public void easyOneAct() {
 	easy1.setOnAction(event-> {
 		gameBoardInit(easyOne);
+		i = 0;
+		time.playFromStart();
 	    });//lambda
     }//easyOneAct
 
@@ -295,6 +297,8 @@ public class Sudoku {
     public void easyTwoAct() {
 	easy2.setOnAction(event-> {
 		gameBoardInit(easyTwo);
+		i = 0;
+		time.playFromStart();
 	    });//lambda
     }//easyTwoAct
 
@@ -307,6 +311,8 @@ public class Sudoku {
     public void medOneAct() {
 	med1.setOnAction(event-> {
 		gameBoardInit(medOne);
+		i = 0;
+		time.playFromStart();
 	    });//lambda
     }//medOneAct
 
@@ -319,6 +325,8 @@ public class Sudoku {
     public void medTwoAct() {
 	med2.setOnAction(event-> {
 		gameBoardInit(medTwo);
+		i = 0;
+		time.playFromStart();
 	    });//lambda
     }//medTwoAct
 
@@ -331,6 +339,8 @@ public class Sudoku {
      public void hardOneAct() {
 	hard1.setOnAction(event-> {
 		gameBoardInit(hardOne);
+		i = 0;
+		time.playFromStart();
 	    });//lambda
     }//hardOneAct
 
@@ -343,6 +353,8 @@ public class Sudoku {
      public void hardTwoAct() {
 	hard2.setOnAction(event-> {
 		gameBoardInit(hardTwo);
+		i = 0;
+		time.playFromStart();
 	    });//lambda
     }//hardTwoAct
 
@@ -488,6 +500,7 @@ public class Sudoku {
 	 * @param none
 	 */
     public void setUpGame() {
+	gameClock.setStyle("-fx-color: red");
 	winBox.setPrefWidth(350);
 	winBox.setPrefHeight(100);
 	winBox.getChildren().addAll(winLabel, winStatus, gameClock);
@@ -559,6 +572,7 @@ public class Sudoku {
 		if(validRow()==true&&validColumn()==true&&validBox()==true){
 		    winStatus.setText(winString);
 		    time.stop();
+		    i =0;
 		}//if
 	      
 		else {
@@ -735,3 +749,4 @@ public class Sudoku {
     }//startGame
 
 }//sudoku
+
