@@ -10,7 +10,13 @@ import javafx.scene.control.TextInputControl;
 import javafx.scene.shape.Rectangle;
 
 
-
+/**
+ * This class provides a Rectangle arrayList, providing
+ * the body for the head of the snake for display and
+ * storage.
+ * @author Anna Marie Gann
+ * @author Alexander Coleman
+ */
 public class Rect{
 
     //variables
@@ -18,9 +24,12 @@ public class Rect{
     ArrayList<Integer> xpos = new ArrayList<Integer>();
     ArrayList<Integer> ypos =new ArrayList<Integer>();
 
-
+    /**
+     * Rect constructor that sets up two dots and
+     * two x and two y positions in arrayList
+     */
     public Rect(){
-	  dots.add(new Rectangle(10, 10));
+	dots.add(new Rectangle(10, 10));
 	dots.add(new Rectangle(10, 10));
 	xpos.add(2);
 	xpos.add(2);
@@ -28,22 +37,42 @@ public class Rect{
 	ypos.add(4);
     }//constructor
 
+     /**
+     * Returns dots arrayList 
+     * @return dots arraylist
+     */
     public ArrayList getRec(){
 	return dots;
     }//getRec
 
+     /**
+     * Returns rectangle value at some position
+     * @return rectangle position in array
+     */
     public Rectangle getRectangle(int index) {
         return dots.get(index);
     }//getRectangle
-    
+
+     /**
+     * Returns x value at some position
+     * @return x position in array
+     */
     public int getX(int i){
 	return xpos.get(i);
     }//getX
 
+    /**
+     * Returns y value at some position
+     * @return y position in array
+     */
      public int getY(int i){
 	 return ypos.get(i);
     }//gety
 
+    /**
+     * Keeps the position of the snake moving
+     * following behind each other
+     */
     public void move(int x, int y){
 	xpos.add(0,x);
 	xpos.remove(xpos.size()-1);
@@ -51,17 +80,15 @@ public class Rect{
 	ypos.remove(ypos.size()-1);
     }//move
 
+    /**
+     * Adds new rectangle object to list
+     * Adds new x and y position to list
+     * @return the last rectangle dot in arraylist
+     */
     public Rectangle moreDots(){
 	dots.add(new Rectangle(10, 10));
 	xpos.add(0);
 	ypos.add(0);
-	//boolean right,boolean left,boolean up,boolean down
-	//xpos.add(getX(xpos.size()-1))
-	//need to figure how to add new x,y postion
-	//x+1 y same if(down){}//if
-	//x-1 y same if (up){xpos.add(}//if
-	//y+1 x same if (right){xpos.add(getX(xpos.size()-1))}//if
-	//y-1 x same if(left){xpos.add(}//if
 
 	return getRectangle(dots.size() - 1);
     }//moreDots
