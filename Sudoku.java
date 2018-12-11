@@ -284,6 +284,8 @@ public class Sudoku {
     public void easyOneAct() {
 	easy1.setOnAction(event-> {
 		gameBoardInit(easyOne);
+		i = 0;
+		time.playFromStart();
 	    });//lambda
     }//easyOneAct
 
@@ -296,6 +298,8 @@ public class Sudoku {
     public void easyTwoAct() {
 	easy2.setOnAction(event-> {
 		gameBoardInit(easyTwo);
+		i = 0;
+		time.playFromStart();
 	    });//lambda
     }//easyTwoAct
 
@@ -308,6 +312,8 @@ public class Sudoku {
     public void medOneAct() {
 	med1.setOnAction(event-> {
 		gameBoardInit(medOne);
+		i = 0;
+		time.playFromStart();
 	    });//lambda
     }//medOneAct
 
@@ -320,6 +326,8 @@ public class Sudoku {
     public void medTwoAct() {
 	med2.setOnAction(event-> {
 		gameBoardInit(medTwo);
+		i = 0;
+		time.playFromStart();
 	    });//lambda
     }//medTwoAct
 
@@ -332,6 +340,8 @@ public class Sudoku {
      public void hardOneAct() {
 	hard1.setOnAction(event-> {
 		gameBoardInit(hardOne);
+		i = 0;
+		time.playFromStart();
 	    });//lambda
     }//hardOneAct
 
@@ -344,6 +354,8 @@ public class Sudoku {
      public void hardTwoAct() {
 	hard2.setOnAction(event-> {
 		gameBoardInit(hardTwo);
+		i = 0;
+		time.playFromStart();
 	    });//lambda
     }//hardTwoAct
 
@@ -583,6 +595,7 @@ public class Sudoku {
 		if(validRow() == true && validColumn() == true && validBox() == true){
 		    winStatus.setText(winString);
 		    time.stop();
+			i= 0;
 		}//if
 	      
 		else {
@@ -662,6 +675,27 @@ public class Sudoku {
 	return true;
     }//validColumn
     
+    public String toTime(int a){
+	int hours =  a/ 60/ 60;
+	int min = (a - (hoursToSeconds(hours)))
+                / 60;
+	int secs = a
+                - ((hoursToSeconds(hours)) + (minutesToSeconds(min)));
+
+	return Integer.toString(hours)+":"+Integer.toString(min)+":"+Integer.toString(secs);
+    }//toTime
+
+    private int hoursToSeconds(int hours) {
+        return hours * 60* 60;
+    }
+
+    private int minutesToSeconds(int minutes) {
+        return minutes * 60;
+    }
+    	int i = 0;
+    public void inI(){
+	i++;
+    }
     /**
      * This method provides a clock which
      * tracks how long the player takes
@@ -669,20 +703,19 @@ public class Sudoku {
      * @param none
      */
     public void tl() {
-	time = new Timeline(new KeyFrame(Duration.ZERO, e-> {
+	time = new Timeline(new KeyFrame(Duration.seconds(1), e-> {
 		    SimpleDateFormat sfd = new SimpleDateFormat("hh:mm:ss");
 		    Calendar cal = Calendar.getInstance();
 		    cal.set(Calendar.MINUTE, 00);
 		    cal.set(Calendar.SECOND, 0);
 		    String dateString = cal.getTime().toString();
-		    gameClock.setText(dateString);
+		    inI();
+		    gameClock.setText(toTime(i));
 	}), //duration
 	    new KeyFrame(Duration.seconds(1))
 	    ); //event handler
 	time.setCycleCount(Animation.INDEFINITE);
 	//repeat until called to stop
-	time.playFromStart();
-	//play from the start of the same
     }//tl
 	    /**
 	     * This method provides the actual
