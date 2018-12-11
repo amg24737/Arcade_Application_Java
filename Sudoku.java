@@ -704,11 +704,6 @@ public class Sudoku {
      */
     public void tl() {
 	time = new Timeline(new KeyFrame(Duration.seconds(1), e-> {
-		    SimpleDateFormat sfd = new SimpleDateFormat("hh:mm:ss");
-		    Calendar cal = Calendar.getInstance();
-		    cal.set(Calendar.MINUTE, 00);
-		    cal.set(Calendar.SECOND, 0);
-		    String dateString = cal.getTime().toString();
 		    inI();
 		    gameClock.setText(toTime(i));
 	}), //duration
